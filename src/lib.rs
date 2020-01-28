@@ -37,9 +37,12 @@ impl Universe {
                     continue;
                 }
 
-                let neighbour_row: usize = (row + delta_row) % self.height;
-                let neighbour_col: usize = (column + delta_col) % self.width;
-                let idx: usize = self.get_index(neighbour_row, neighbour_col);
+                let neighbour_row: usize = ((row + delta_row) % self.height)
+                    as usize;
+                let neighbour_col: usize = ((column + delta_col) % self.width)
+                    as usize;
+                let idx: usize = self.get_index(neighbour_row as u32,
+                                                neighbour_col as u32);
                 count += self.cells[idx] as u8;
             }
         }
@@ -51,7 +54,7 @@ impl Universe {
 #[wasm_bindgen]
 impl Universe {
     pub fn tick(&mut self) {
-        let mut next: Cell = self.cells.clone();
+        let mut next: Vec<Cell> = self.cells.clone();
 
         for row in 0..self.height {
             for col in 0..self.width {
